@@ -72,3 +72,6 @@ target/
 
 # Bat files
 migrate.bat
+
+# venv
+.venv/
