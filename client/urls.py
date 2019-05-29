@@ -8,5 +8,7 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-    path(r'test', views.test),
+    path(r'query_user', views.QueryUser.as_view()),
+    path(r'list_user', views.ListUser.as_view()),
+    path(r'list_problem', views.ListProblem.as_view()),
 ]
