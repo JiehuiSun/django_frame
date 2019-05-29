@@ -36,7 +36,6 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
-    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -64,7 +63,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'qa_system.wsgi.application'
+# WSGI_APPLICATION = 'qa_system.wsgi.application'
 
 
 # Password validation
@@ -93,10 +92,6 @@ LANGUAGE_CODE = 'zh-hans'
 
 TIME_ZONE = 'Asia/Shanghai'
 
-USE_I18N = True
-
-USE_L10N = True
-
 USE_TZ = False
 
 DATE_FORMAT = 'Y-m-d'
@@ -109,20 +104,9 @@ DATETIME_FORMAT = 'Y-m-d H:i'
 
 STATIC_URL = '/static/'
 
-CACHES = {
-    'default': {
-        'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
-        'LOCATION': '/var/tmp/django_cache',
-        'TIMEOUT': 3600,
-        'OPTIONS': {
-            'MAX_ENTRIES': 1000
-        }
-    }
-}
+#  SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 
-SESSION_EXPIRE_AT_BROWSER_CLOSE = True
-
-CORS_ORIGIN_ALLOW_ALL = True
+#  CORS_ORIGIN_ALLOW_ALL = True
 
 try:
     if os.getenv("QA_SYSTEM").lower() == "pro":
