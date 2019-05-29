@@ -5,8 +5,8 @@
 # Filename: server/urls.py
 
 from django.urls import path
-from . import test_views
+from . import views
 
 urlpatterns = [
-    path(r'test', test_views.test),
+    path(r'test', views.test),
 ]

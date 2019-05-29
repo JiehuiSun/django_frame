@@ -123,3 +123,13 @@ CACHES = {
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 
 CORS_ORIGIN_ALLOW_ALL = True
+
+try:
+    if os.getenv("QA_SYSTEM").lower() == "pro":
+        from .pro import *
+    else:
+        from .dev import *
+except Exception as e:
+    print("-" * 40)
+    print("Warning: $QA_SYSTEM is undefined")
+    from .dev import *
