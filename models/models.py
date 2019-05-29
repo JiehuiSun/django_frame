@@ -1,19 +1,24 @@
+#!/usr/bin/env python
+# _*_ encoding: utf-8 _*_
+# Create: 2019-05-29 16:21:50
+# Author: huihui - sunjiehuimail@foxmail.com
+# Filename: models.py
+
 from django.db import models
+from client.models import User
 
 
-class User(models.Model):
-    openid = models.CharField(max_length=32, unique=True, verbose_name='用户openid')
-    nickname = models.CharField(max_length=100, null=True, blank=True, default='', verbose_name='微信昵称')
-    avatar = models.URLField(null=True, blank=True, default='', verbose_name='头像')
-    username = models.CharField(max_length=20, null=True, blank=True, default='', verbose_name='真实姓名')
-    phone = models.CharField(max_length=11, null=True, blank=True, default='', verbose_name='手机号')
+class Problem(models.Model):
+    title = models.CharField(max_length=128, verbose_name='标题')
+    user_id = models.ManyToManyField(User)
+    content = models.TextField(null=True, blank=True, default='', verbose_name='内容描述')
+    images = models.TextField(null=True, blank=True, default='', verbose_name='相关图片')
+    is_deleted = models.BooleanField(default=False)
+    is_activate = models.BooleanField(default=True)
     dt_create = models.DateTimeField(auto_now_add=True)
     dt_update = models.DateTimeField(auto_now=True)
-
-    class Meta:
-        verbose_name = '用户'
-        verbose_name_plural = '用户列表'
-        ordering = ['-id']
+    CHOICES = ((1, "完成"), (2, "进行中"))
+    status = models.IntegerField(choices=CHOICES, verbose_name='问题状态', null=True, blank=True)
 
     def to_dict(self, fields=None, exclude=None):
         data = {}
