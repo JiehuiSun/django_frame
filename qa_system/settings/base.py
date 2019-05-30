@@ -33,7 +33,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'server',
     'client',
-    'models',
+    'qa_models',
 ]
 
 MIDDLEWARE = [
