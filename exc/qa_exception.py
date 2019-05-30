@@ -4,20 +4,17 @@
 # Author: huihui - sunjiehuimail@foxmail.com
 # Filename: qa_exception.py
 
-class _EvenException(Exception):
+class _QaException(Exception):
     _errcode_dict = {
         0: 'OK',
     }
 
-    def __init__(self, errcode, errmsg=None, data=None):
-        # print('dict: ', self._errcode_dict)
-        # print('errcode', type(errcode), errcode)
-        # print('errmsg', type(errmsg), errmsg)
-        if not self._check_errcode(errcode):
+    def __init__(self, code=0, msg=None, data=None):
+        if not self._check_errcode(code):
             raise NotImplementedError(
                 'errcode {0} is not implemented'.format(errcode))
-        self.errcode = errcode
-        self.errmsg = errmsg if errmsg else self._errcode_dict[errcode]
+        self.errcode = code
+        self.errmsg = msg if msg else self._errcode_dict[errcode]
         self.data = data
 
     def _check_errcode(self, errcode):
@@ -26,11 +23,11 @@ class _EvenException(Exception):
         return False
 
 
-class RespOK(_EvenException):
+class RespOK(_QaException):
     pass
 
 
-class LogicError(_EvenException):
+class LogicError(_QaException):
     '''
     LogicError 供API层对外抛出异常使用
 
@@ -46,7 +43,7 @@ class LogicError(_EvenException):
     }
 
 
-class SysError(_EvenException):
+class SysError(_QaException):
     '''
     SysError 供API层对外抛出异常使用
 

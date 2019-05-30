@@ -9,10 +9,8 @@
 import re
 import json
 import types
-# from flask import current_app, request, jsonify
 from django.shortcuts import HttpResponse
 from django.views.generic import View
-#  from werkzeug.exceptions import BadRequest
 from exc import RespOK, LogicError, SysError
 
 
@@ -26,22 +24,32 @@ class PostRPCView(View):
 
     methods = ['POST', 'GET']
     params_dict = dict()
+    decorators = []
+
+    @classmethod
+    def compose(self, *funs):
+        def deco(f):
+            for fun in reversed(funs):
+                f = fun(f)
+            return f
+        return deco
 
     def dispatch(self, req):
-        self.request = req
-        # self.current_app = current_app
 
         try:
-            data = self.request.POST
+            data = req.body
+            if data == None:
+                # XXX 不知道django怎么捕捉BadRequest的异常(最好是加一个except)
+                ret = {
+                    'errcode': 12001,
+                    'errmsg': str(e),
+                }
+                return HttpResponse(json.dumps(ret, ensure_ascii=False))
+            data = json.loads(data)
+
             params = self.__preprocess_req(data)
-            ret = self.logic_func(params)
+            ret = self.post(params)
             raise ret
-        #  except BadRequest as e:
-            #  # current_app.logger.exception(e)
-            #  ret = {
-                #  'errcode': 12001,
-                #  'errmsg': str(e),
-            #  }
         except LogicError as e:
             # current_app.logger.exception(e)
             ret = {
@@ -78,7 +86,7 @@ class PostRPCView(View):
         logic_func(x, y, z)
         '''
         raise NotImplementedError(
-            'logic_func is not implemented')
+            'post is not implemented')
 
     def __preprocess_req(self, data):
         '''
