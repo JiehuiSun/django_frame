@@ -14,7 +14,7 @@ from django.views.generic import View
 from exc import RespOK, LogicError, SysError
 
 
-class PostRPCView(View):
+class PostView(View):
     '''
     PostRPCView
 
