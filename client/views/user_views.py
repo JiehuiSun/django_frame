@@ -8,7 +8,7 @@ from django.shortcuts import HttpResponse
 from django.views.generic import View
 from qa_system.utils import json_response, json_error
 from client.models import User
-from models.models import Problem
+from qa_models.models import Problem
 
 
 class QueryUser(View):
