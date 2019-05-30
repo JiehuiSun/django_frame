@@ -5,6 +5,8 @@
 # Filename: test_views.py
 
 from django.shortcuts import HttpResponse
+from framework.qa_view import PostView
+from exc.qa_exception import RespOK, LogicError
 
 
 def test(req):
@@ -12,3 +14,28 @@ def test(req):
     test api
     """
     return HttpResponse("client test success")
+
+
+class TestParams(PostView):
+    """
+    测试参数的实例
+    """
+
+    # decorators = []                       # 理想的装饰器写法
+
+    params_dict = {
+        "params1": "required int",          # 参数验证(必填并且为整数)
+        "params1": "optional pass",         # 参数验证(可选并不验证value)
+    }
+
+    @PostView.compose()                     # 所有装饰器写这里(后期封装成直接一个list属性,类似decorators)
+    def post(self, params):
+        params1 = params["params1"]
+
+        ret = {
+            "code": 0,                      # code 默认为 0 代表成功
+            "msg": "OK",                    # msg 默认为 "OK" 代表成功
+            "data": {"params1": params1}    # ret data
+        }
+        return RespOK(**ret)
+
