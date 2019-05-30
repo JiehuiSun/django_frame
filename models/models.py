@@ -10,7 +10,6 @@ from client.models import User
 
 class Problem(models.Model):
     title = models.CharField(max_length=128, verbose_name='标题')
-    user_id = models.ManyToManyField(User)
     content = models.TextField(null=True, blank=True, default='', verbose_name='内容描述')
     images = models.TextField(null=True, blank=True, default='', verbose_name='相关图片')
     is_deleted = models.BooleanField(default=False)
