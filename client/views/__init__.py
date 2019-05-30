@@ -4,5 +4,5 @@
 # Author: huihui - sunjiehuimail@foxmail.com
 # Filename: __init__.py
 
-from .test_views import test
+from .test_views import test, TestParams
 from .user_views import QueryUser, ListUser, ListProblem
