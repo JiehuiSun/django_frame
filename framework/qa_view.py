@@ -260,7 +260,7 @@ class GetView(View):
                     'errcode': 12001,
                     'errmsg': str(e),
                 }
-                return HttpResponse(json.dumps(ret, ensure_ascii=False))
+                return HttpResponse(json.dumps(ret, ensure_ascii=False), content_type="application/json")
 
             params = self.__preprocess_req(data)
             ret = self.get(params)
@@ -291,7 +291,7 @@ class GetView(View):
                 'errcode': 50000,
                 'errmsg': str(e),
             }
-        return HttpResponse(json.dumps(ret, ensure_ascii=False))
+        return HttpResponse(json.dumps(ret, ensure_ascii=False), content_type="application/json")
 
     def get(self, params):
         '''

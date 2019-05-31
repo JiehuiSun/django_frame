@@ -4,47 +4,41 @@
 # Author: huihui - sunjiehuimail@foxmail.com
 # Filename: user_views.py
 
-from django.shortcuts import HttpResponse
-from django.views.generic import View
-from qa_system.utils import json_response, json_error
+from framework.qa_view import GetView
+from exc.qa_exception import RespOK, LogicError
 from client.models import User
-from qa_models.models import Problem
 
 
-class QueryUser(View):
+class QueryUser(GetView):
     """
     """
-    def get(self, req):
-        user_id = req.GET.get("user_id")
+    params_dict = {
+        "user_id": "required"
+    }
+    def get(self, params):
+        user_id = params["user_id"]
         user_obj = User.objects.filter(pk=user_id).first()
         user_dict = user_obj.to_dict()
 
-        ret = {
+        ret_data = {
             "user_info": user_dict
         }
-        return json_response(ret)
+        ret = {
+            "data": ret_data
+        }
+        return RespOK(**ret)
 
 
-class ListUser(View):
+class ListUser(GetView):
     """
     """
     def get(self, req):
         user_obj_list = User.objects.all()
         user_list = [i.to_dict() for i in user_obj_list]
-        ret = {
+        ret_data = {
             "user_list": user_list
         }
-        return json_response(ret)
-
-
-
-class ListProblem(View):
-    """
-    """
-    def get(self, req):
-        problem_obj_list = Problem.objects.all()
-        problem_list = [i.to_dict() for i in problem_obj_list]
         ret = {
-            "problem_list": problem_list
+            "data": ret_data
         }
-        return json_response(ret)
+        return RespOK(**ret)
