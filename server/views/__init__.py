@@ -5,3 +5,4 @@
 # Filename: __init__.py
 
 from .test_views import test
+from .user_views import QueryUser

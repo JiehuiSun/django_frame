@@ -6,7 +6,7 @@
 
 from framework.qa_view import GetView
 from exc.qa_exception import RespOK, LogicError
-from client.backend.api_user import query_user
+from server.backend.api_user import query_user
 
 
 class QueryUser(GetView):

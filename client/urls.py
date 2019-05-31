@@ -12,7 +12,6 @@ URL_NAME_PREFIX = "client_"
 urlpatterns = [
     path(r'test_params', views.TestParams.as_view()),
     path(r'query_user', views.QueryUser.as_view(), name=URL_NAME_PREFIX + "query_user"),
-    path(r'list_user', views.ListUser.as_view(), name=URL_NAME_PREFIX + "list_user"),
     path(r'list_problem', views.ListProblem.as_view(), name=URL_NAME_PREFIX + "list_problem"),
     path(r'list_problem_tag', views.ListProblemTag.as_view(), name=URL_NAME_PREFIX + "list_problem_tag"),
 ]

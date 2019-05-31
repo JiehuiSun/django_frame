@@ -5,5 +5,5 @@
 # Filename: __init__.py
 
 from .test_views import test, TestParams
-from .user_views import QueryUser, ListUser
+from .user_views import QueryUser
 from .problem_views import ListProblem, ListProblemTag

@@ -7,6 +7,9 @@
 from django.urls import path
 from . import views
 
+URL_NAME_PREFIX = "server_"
+
 urlpatterns = [
     path(r'test', views.test),
+    path(r'query_user', views.QueryUser.as_view(), name=URL_NAME_PREFIX + "query_user"),
 ]
