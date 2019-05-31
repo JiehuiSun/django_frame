@@ -8,8 +8,8 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-    path(r'query_user', views.QueryUser.as_view()),
-    path(r'list_user', views.ListUser.as_view()),
-    path(r'list_problem', views.ListProblem.as_view()),
     path(r'test_params', views.TestParams.as_view()),
+    path(r'query_user', views.QueryUser.as_view(), name="client_query_user"),
+    path(r'list_user', views.ListUser.as_view(), name="client_list_user"),
+    path(r'list_problem', views.ListProblem.as_view(), name="client_list_user"),
 ]
