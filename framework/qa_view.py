@@ -16,7 +16,7 @@ from exc import RespOK, LogicError, SysError
 
 class PostView(View):
     '''
-    PostRPCView
+    PostView
 
     use post method only
     action like a rpc method
@@ -228,3 +228,114 @@ class PostView(View):
         if isinstance(i, int):
             return True, 'OK'
         return False, '{0} 必须为int(整型)类型, 谢谢配合!'.format(key_name)
+
+
+class GetView(View):
+    '''
+    GetView(因为没找到判断get跟post的方式，所以暂时新建一个新的get请求的参数验证类)
+
+    use get method only
+    action like a rpc method
+    '''
+
+    methods = ['GET']
+    params_dict = dict()
+    decorators = []
+
+    @classmethod
+    def compose(self, *funs):
+        def deco(f):
+            for fun in reversed(funs):
+                f = fun(f)
+            return f
+        return deco
+
+    def dispatch(self, req):
+
+        try:
+            data = req.GET
+            if data == None:
+                # XXX 不知道django怎么捕捉BadRequest的异常(最好是加一个except)
+                ret = {
+                    'errcode': 12001,
+                    'errmsg': str(e),
+                }
+                return HttpResponse(json.dumps(ret, ensure_ascii=False))
+
+            params = self.__preprocess_req(data)
+            ret = self.get(params)
+            raise ret
+        except LogicError as e:
+            # current_app.logger.exception(e)
+            ret = {
+                'errcode': e.errcode,
+                'errmsg': e.errmsg,
+            }
+        except SysError as e:
+            # current_app.logger.exception(e)
+            ret = {
+                'errcode': e.errcode,
+                'errmsg': e.errmsg,
+            }
+        except RespOK as e:
+            # 如果是OK，不记录Exception，因为是正常的业务返回
+            # current_app.logger.exception(e)
+            ret = {
+                'errcode': e.errcode,
+                'errmsg': e.errmsg,
+                'data': e.data,
+            }
+        except Exception as e:
+            # current_app.logger.exception(e)
+            ret = {
+                'errcode': 50000,
+                'errmsg': str(e),
+            }
+        return HttpResponse(json.dumps(ret, ensure_ascii=False))
+
+    def get(self, params):
+        '''
+        this real logic
+
+        方法的参数必须明确, 如下所示
+        logic_func(x, y, z)
+        '''
+        raise NotImplementedError(
+            'get is not implemented')
+
+    def __preprocess_req(self, data):
+        '''
+        __preprocess_req 检验参数方法
+
+        所有logic_func 的方法参数必须
+        在这个方法被妥善检查
+        '''
+        data_keys = set(data.keys())
+        max_keys = set(self.params_dict.keys())
+        # mini keys 判断
+        min_keys = set()
+        for k in max_keys:
+            check_method = self.params_dict[k]
+            if isinstance(check_method, types.FunctionType):
+                continue
+            params_dict_list = self.params_dict[k].split(' ')
+            if 'optional' not in params_dict_list:
+                min_keys.add(k)
+        overflow_keys = data_keys - max_keys
+        lack_keys = min_keys - data_keys
+
+        # 验证后端需要的key 传递情况
+        flag_keys_not_match = False
+        errmsg_keys_not_match = ''
+        if overflow_keys:
+            flag_keys_not_match = True
+            errmsg_keys_not_match += '请求参数中, 多余的key包括: '
+            errmsg_keys_not_match += ', '.join([str(k) for k in overflow_keys])
+        if lack_keys:
+            flag_keys_not_match = True
+            errmsg_keys_not_match += '请求参数中, 缺少的key包括: '
+            errmsg_keys_not_match += ', '.join([str(k) for k in lack_keys])
+        if flag_keys_not_match:
+            raise LogicError(errcode=12001, errmsg=errmsg_keys_not_match)
+
+        return data
