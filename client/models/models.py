@@ -7,6 +7,7 @@ class User(models.Model):
     avatar = models.URLField(null=True, blank=True, default='', verbose_name='头像')
     username = models.CharField(max_length=20, null=True, blank=True, default='', verbose_name='真实姓名')
     phone = models.CharField(max_length=11, null=True, blank=True, default='', verbose_name='手机号')
+    source_id = models.IntegerField(default=1, verbose_name="用户来源")
     dt_create = models.DateTimeField(auto_now_add=True)
     dt_update = models.DateTimeField(auto_now=True)
 

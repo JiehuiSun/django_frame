@@ -9,12 +9,12 @@ class _QaException(Exception):
         0: 'OK',
     }
 
-    def __init__(self, code=0, msg=None, data=None):
-        if not self._check_errcode(code):
+    def __init__(self, errcode=0, errmsg=None, data=None):
+        if not self._check_errcode(errcode):
             raise NotImplementedError(
                 'errcode {0} is not implemented'.format(errcode))
-        self.errcode = code
-        self.errmsg = msg if msg else self._errcode_dict[errcode]
+        self.errcode = errcode
+        self.errmsg = errmsg if errmsg else self._errcode_dict[errcode]
         self.data = data
 
     def _check_errcode(self, errcode):

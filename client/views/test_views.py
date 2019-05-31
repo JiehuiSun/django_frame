@@ -33,9 +33,8 @@ class TestParams(PostView):
         params1 = params["params1"]
 
         ret = {
-            "code": 0,                      # code 默认为 0 代表成功
-            "msg": "OK",                    # msg 默认为 "OK" 代表成功
-            "data": {"params1": params1}    # ret data
+            "errcode": 0,                       # code 默认为 0 代表成功
+            "errmsg": "OK",                     # msg 默认为 "OK" 代表成功
+            "data": {"params1": params1}        # ret data
         }
         return RespOK(**ret)
-
